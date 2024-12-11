@@ -1,0 +1,61 @@
+﻿@model SimpleLogisticSystem.ViewModels.Orders.CreateOrderViewModel
+
+@{
+    ViewData["Title"] = "Create Order";
+}
+
+<h2>Create Order</h2>
+
+<form asp-controller="Order" asp-action="Create" method="post">
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="col-md-6">
+            <h4>Available Items</h4>
+            <div class="list-group" id="availableItems">
+                @foreach (var warehouseItem in Model.WarehouseItems)
+
+                {
+                    <a class="list-group-item list-group-item-action" data-bs-toggle="collapse" href="#itemDetails-@warehouseItem.ItemId" role="button" aria-expanded="false" aria-controls="itemDetails-@warehouseItem.ItemId">
+                        @warehouseItem.ItemName - @warehouseItem.Price Sek
+                    </a>
+                    <div class="collapse" id="itemDetails-@warehouseItem.ItemId">
+                        <div class="card card-body" style="background-color: #e9ecef;">
+                            <p><strong>Item Name:</strong> @warehouseItem.ItemName</p>
+                            <p><strong>Price:</strong> @warehouseItem.Price Sek</p>
+                            <p><strong>Category:</strong> @warehouseItem.ItemCategory</p>
+                            <p><strong>Stock:</strong> @warehouseItem.Quantity</p>
+                            <p><strong>Weight:</strong> @warehouseItem.Weight Kg</p>
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <div class="form-group">
+                                        <label for="quantity-@warehouseItem.ItemId">Quantity</label>
+                                        <input type="number" class="form-control form-control-sm" id="quantity-@warehouseItem.ItemId" min="1" max="@warehouseItem.Quantity" value="1" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-10 d-flex align-items-end">
+                                    <button type="button" class="btn btn-primary btn-sm" onclick="addToOrder(@warehouseItem.ItemId, '@warehouseItem.ItemName', @warehouseItem.Price, @warehouseItem.Quantity, '@warehouseItem.Weight')">Add to order</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-6">
+            <h4>Order Items</h4>
+            <div class="list-group" id="orderItems">
+                <div class="list-group-item" id="noItemsMessage">
+                    <p>No items in the order yet.</p>
+                </div>
+            </div>
+            <p><strong>Total Quantity:</strong> <span id="totalQuantity">0</span></p>
+            <p><strong>Total Price:</strong> <span id="totalPrice">0.00</span> Sek</p>
+            <p><strong>Total Weight:</strong> <span id="totalWeight">0</span> Kg</p>
+            <button type="submit" class="btn btn-success mt-3">Create Order</button>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/js/CreateOrder.js"></script>
+}

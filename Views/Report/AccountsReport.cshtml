@@ -1,0 +1,64 @@
+﻿@model IEnumerable<SimpleLogisticSystem.ViewModels.Users.UserViewModel>
+
+@{
+    ViewData["Title"] = "Accounts Report";
+}
+
+<h2 class="text-center">Accounts Report</h2>
+
+<div class="report-section">
+    <form method="post" asp-action="ExportAccountsToCsv">
+        <button type="submit" class="btn btn-primary">Export to CSV</button>
+    </form>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Username</th>
+                <th>First Name</th>
+                <th>Last Name</th>
+                <th>Email</th>
+                <th>User Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Username</td>
+                    <td>@user.FirstName</td>
+                    <td>@user.LastName</td>
+                    <td>@user.Email</td>
+                    <td>@user.UserRole</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<style>
+    .report-section {
+        margin-bottom: 20px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .table-bordered {
+        border: 1px solid #dee2e6;
+    }
+
+    .thead-dark th {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .btn {
+        margin-bottom: 20px;
+    }
+</style>

@@ -1,0 +1,44 @@
+﻿@model IEnumerable<SimpleLogisticSystem.ViewModels.Orders.OrderViewModel>
+
+@{
+    ViewData["Title"] = "All Orders Report";
+}
+
+<h2 class="text-center">All Orders Report</h2>
+
+<form method="post" asp-action="ExportAllOrdersToCsv">
+    <button type="submit" class="btn btn-primary">Export All to CSV</button>
+</form>
+
+<table class="table table-bordered">
+    <thead class="thead-dark">
+        <tr>
+            <th>Order ID</th>
+            <th>Created By</th>
+            <th>Created At</th>
+            <th>Total Price</th>
+            <th>Total Weight</th>
+            <th>Items</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.CreatedBy</td>
+                <td>@order.CreatedAt</td>
+                <td>@order.TotalPrice.ToString("C")</td>
+                <td>@order.TotalWeight.ToString("F2") Kg</td>
+                <td>
+                    <ul>
+                        @foreach (var item in order.OrderItems)
+                        {
+                            <li>@item.Item.ItemName</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

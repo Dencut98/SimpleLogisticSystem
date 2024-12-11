@@ -1,0 +1,39 @@
+﻿@using SimpleLogisticSystem.ViewModels.Report
+@model IEnumerable<InventoryReportViewModel>
+
+@{
+    ViewData["Title"] = "Inventory Report";
+}
+
+<h2>Inventory Report</h2>
+
+<div class="text-right mb-3">
+    <a href="@Url.Action("ExportInventoryReportToCsv", "Report")" class="btn btn-primary">Export to CSV</a>
+</div>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Item Name</th>
+            <th>Quantity not yet in warehouses</th>
+            <th>Warehouse quantity</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.ItemName</td>
+                <td>@item.QuantityNotStored</td>
+                <td>
+                    <ul>
+                        @foreach (var detail in item.WarehouseDetails)
+                        {
+                            <li>@detail.Warehouse.WarehouseName: @detail.TotalQuantity</li>
+                        }
+                    </ul>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

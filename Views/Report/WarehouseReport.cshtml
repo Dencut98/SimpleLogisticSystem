@@ -1,0 +1,90 @@
+﻿@using SimpleLogisticSystem.ViewModels.Warehouses
+@model WarehouseDetailViewModel
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center">Warehouse Report</h2>
+            <hr />
+            <h4>Warehouse Details</h4>
+            <table class="table table-bordered">
+                <tbody>
+                    <tr>
+                        <th>Warehouse ID</th>
+                        <td>@Model.Warehouse.Id</td>
+                    </tr>
+                    <tr>
+                        <th>Warehouse Company</th>
+                        <td>@Model.Warehouse.WarehouseCompany</td>
+                    </tr>
+                    <tr>
+                        <th>Warehouse Name</th>
+                        <td>@Model.Warehouse.WarehouseName</td>
+                    </tr>
+                    <tr>
+                        <th>Street</th>
+                        <td>@Model.Warehouse.Address.Street</td>
+                    </tr>
+                    <tr>
+                        <th>City</th>
+                        <td>@Model.Warehouse.Address.City</td>
+                    </tr>
+                    <tr>
+                        <th>Postal Code</th>
+                        <td>@Model.Warehouse.Address.PostalCode</td>
+                    </tr>
+                    <tr>
+                        <th>Country</th>
+                        <td>@Model.Warehouse.Address.Country</td>
+                    </tr>
+                    <tr>
+                        <th>Quantity Capacity</th>
+                        <td>@Model.Warehouse.QuantityCapacity</td>
+                    </tr>
+                    <tr>
+                        <th>Weight Capacity</th>
+                        <td>@Model.Warehouse.WeightCapacity.ToString("F1") kg</td>
+                    </tr>
+                    <tr>
+                        <th>Created By</th>
+                        <td>@Model.Warehouse.CreatedBy</td>
+                    </tr>
+                    <tr>
+                        <th>Created By (ID)</th>
+                        <td>@Model.Warehouse.AppUserId</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h4>Current Items</h4>
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Item Name</th>
+                        <th>Quantity</th>
+                        <th>Weight</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Warehouse.WarehouseItems)
+                    {
+                        <tr>
+                            <td>@item.Item.ItemName</td>
+                            <td>@item.Quantity</td>
+                            <td>@item.Weight.ToString("F1") kg</td>
+                        </tr>
+                    }
+                    <tr>
+                        <td><strong>Total</strong></td>
+                        <td><strong>@Model.TotalQuantity</strong></td>
+                        <td><strong>@Model.TotalWeight.ToString("F1") kg</strong></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="text-center mt-4">
+                <a href="@Url.Action("ExportWarehouseToCsv", "Report", new { id = Model.Warehouse.Id })" class="btn btn-primary">Export to CSV</a>
+            </div>
+        </div>
+    </div>
+</div>

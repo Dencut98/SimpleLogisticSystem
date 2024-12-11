@@ -1,0 +1,105 @@
+﻿@using SimpleLogisticSystem.ViewModels.Warehouses
+@model EditWarehouseViewModel
+
+<h2>Warehouse Edit Menu</h2>
+
+<form method="post" asp-action="Edit" enctype="multipart/form-data" class="form-horizontal">
+    <input type="hidden" asp-for="CreatedBy" />
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="AppUserId" />
+    <div class="row g-2 mb-3">
+        <div class="col-md">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingInputGrid" placeholder="Warehouse name" asp-for="WarehouseName">
+                <span asp-validation-for="WarehouseName" class="text-danger"></span>
+                <label for="floatingInputGrid">Warehouse Name</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating">
+                <select class="form-select" id="floatingSelect" aria-label="Floating Label select example" asp-for="WarehouseCompany">
+                    <option selected></option>
+                    @foreach (var company in Model.CompanyNames)
+                    {
+                        <option value="@company">@company</option>
+                    }
+                </select>
+                <label for="floatingSelect">Select Warehouse</label>
+            </div>
+        </div>
+    </div>
+
+    <h3>Address</h3>
+    <div class="row g-2 mb-3">
+        <div class="col-md">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingStreet" placeholder="Street" asp-for="Address.Street">
+                <span asp-validation-for="Address.Street" class="text-danger"></span>
+                <label for="floatingStreet">Street</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingCity" placeholder="City" asp-for="Address.City">
+                <span asp-validation-for="Address.City" class="text-danger"></span>
+                <label for="floatingCity">City</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingCountry" placeholder="Country" asp-for="Address.Country">
+                <span asp-validation-for="Address.Country" class="text-danger"></span>
+                <label for="floatingCountry">Country</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating">
+                <input type="text" class="form-control" id="floatingPostalCode" placeholder="Postal Code" asp-for="Address.PostalCode">
+                <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
+                <label for="floatingPostalCode">Postal Code</label>
+            </div>
+        </div>
+    </div>
+
+    <h3>Capacity</h3>
+    <div class="row g-2 mb-3">
+        <div class="col-md">
+            <div class="form-floating">
+                <input type="number" class="form-control" id="floatingQuantityCapacity" placeholder="Quantity Capacity" asp-for="QuantityCapacity" value="1">
+                <span asp-validation-for="QuantityCapacity" class="text-danger"></span>
+                <label for="floatingQuantityCapacity">Quantity Capacity</label>
+            </div>
+        </div>
+        <div class="col-md">
+            <div class="form-floating">
+                <input type="number" step="0.01" class="form-control" id="floatingWeightCapacity" placeholder="Weight Capacity" asp-for="WeightCapacity" value="1">
+                <span asp-validation-for="WeightCapacity" class="text-danger"></span>
+                <label for="floatingWeightCapacity">Weight Capacity (kg)</label>
+            </div>
+        </div>
+    </div>
+
+    <a asp-controller="Warehouse" asp-action="Detail" asp-route-id="@Model.Id" class="btn btn-secondary">Cancel</a>
+    <form asp-controller="Warehouse" asp-action="Edit" asp-route-id="@Model.Id" method="post" style="display:inline;">
+
+        <!-- Modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmEdit-@Model.Id">Confirm edit</button>
+        <div class="modal fade" id="confirmEdit-@Model.Id" tabindex="-1" aria-labelledby="confirmEditLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        Are you sure you want to edit this item?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-success">Confirm changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</form>

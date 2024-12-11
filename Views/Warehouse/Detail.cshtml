@@ -1,0 +1,102 @@
+﻿@using SimpleLogisticSystem.ViewModels.Warehouses
+@model WarehouseDetailViewModel
+
+<div class="card">
+    <div class="card-header text-center bg-primary text-white">
+        <h3>Warehouse Details</h3>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-5">
+                <h5 class="text-center">@Model.Warehouse.WarehouseCompany</h5>
+                <p><strong>Warehouse Name:</strong> @Model.Warehouse.WarehouseName</p>
+                <p><strong>Street:</strong> @Model.Warehouse.Address.Street</p>
+                <p><strong>City:</strong> @Model.Warehouse.Address.City</p>
+                <p><strong>Postal Code:</strong> @Model.Warehouse.Address.PostalCode</p>
+                <p><strong>Country:</strong> @Model.Warehouse.Address.Country</p>
+                <p><strong>Quantity Capacity:</strong> @Model.Warehouse.QuantityCapacity</p>
+                <p><strong>Weight Capacity:</strong> @Model.Warehouse.WeightCapacity.ToString("F1") kg</p>
+                <p><strong>Created By:</strong> @Model.Warehouse.CreatedBy</p>
+
+                @if (User.Identity != null && User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("inventory_manager")))
+                {
+                    <div class="card-footer d-flex justify-content-center gap-2 mt-3">
+                        <a asp-controller="Warehouse" asp-action="Edit" asp-route-id="@Model.Warehouse.Id" class="btn btn-primary btn-lg">Edit</a>
+                        <form asp-controller="Warehouse" asp-action="Delete" asp-route-id="@Model.Warehouse.Id" method="post" style="display:inline;">
+                            <!-- Modal -->
+                            <button type="button" class="btn btn-danger btn-lg" data-bs-toggle="modal" data-bs-target="#confirmDelete-@Model.Warehouse.Id">Delete</button>
+                            <div class="modal fade" id="confirmDelete-@Model.Warehouse.Id" tabindex="-1" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Are you sure you want to delete this item? This action is irreversible!
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger">Confirm deletion</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                }
+                else
+                {
+                    <p class="text-body-secondary mt-3">
+                        Only admins or inventory managers can edit warehouses!
+                    </p>
+                }
+            </div>
+            <div class="col-md-1">
+                <div style="border-left: 1px solid #000; height: 100%;"></div>
+            </div>
+            <div class="col-md-6">
+                <h4>Current Items</h4>
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Quantity</th>
+                            <th>Weight</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Warehouse.WarehouseItems)
+                        {
+                            <tr>
+                                <td>@item.Item.ItemName</td>
+                                <td>@item.Quantity</td>
+                                <td>@item.Weight.ToString("F1") kg</td>
+                                <td>
+                                    @if (User.Identity != null && User.Identity.IsAuthenticated && (User.IsInRole("admin") || User.IsInRole("inventory_manager")))
+                                    {
+                                        <form asp-controller="Warehouse" asp-action="RemoveItemFromWarehouse" method="post" style="display:inline;">
+                                            <input type="hidden" name="warehouseId" value="@Model.Warehouse.Id" />
+                                            <input type="hidden" name="itemId" value="@item.ItemId" />
+                                            <div class="input-group">
+                                                <input type="number" name="quantity" class="form-control" min="1" max="@item.Quantity" value="1" required />
+                                                <button type="submit" class="btn btn-danger">Remove</button>
+                                            </div>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                        <tr>
+                            <td><strong>Total</strong></td>
+                            <td><strong>@Model.TotalQuantity</strong></td>
+                            <td><strong>@Model.TotalWeight.ToString("F1") kg</strong></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

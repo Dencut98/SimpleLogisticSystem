@@ -1,0 +1,89 @@
+﻿@model SimpleLogisticSystem.Models.Order
+
+@{
+    ViewData["Title"] = "Order Report";
+    double totalPrice = 0;
+    double totalWeight = 0;
+}
+
+<h2 class="text-center">Order Report</h2>
+
+<div class="report-section">
+    <form method="post" asp-action="ExportOrderToCsv" asp-route-orderId="@Model.OrderId">
+        <button type="submit" class="btn btn-primary">Export to CSV</button>
+    </form>
+    <h3>Order Details</h3>
+    <p><strong>Order ID:</strong> @Model.OrderId</p>
+    <p><strong>Created By (User ID):</strong> @Model.CreatedBy (@Model.AppUserId)</p>
+    <p><strong>Time of Order:</strong> @Model.CreatedAt</p>
+    <p><strong>Address:</strong></p>
+    <ul>
+        <li><strong>Street:</strong> @Model.Address.Street</li>
+        <li><strong>City:</strong> @Model.Address.City</li>
+        <li><strong>Postal Code:</strong> @Model.Address.PostalCode</li>
+        <li><strong>Country:</strong> @Model.Address.Country</li>
+    </ul>
+</div>
+
+<div class="report-section">
+    <h3>Order Items</h3>
+    <table class="table table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Item ID</th>
+                <th>Item Name</th>
+                <th>Price</th>
+                <th>Weight</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.Item.ItemId</td>
+                    <td>@item.Item.ItemName</td>
+                    <td>@item.Item.Price.ToString("C")</td>
+                    <td>@item.Weight.ToString("F2")</td>
+                    <td>@item.Quantity</td>
+                </tr>
+                totalPrice += item.Item.Price * item.Quantity;
+                totalWeight += item.Weight * item.Quantity;
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="report-section">
+    <h3>Total</h3>
+    <p><strong>Total Price:</strong> @totalPrice.ToString("C")</p>
+    <p><strong>Total Weight:</strong> @totalWeight.ToString("F2") Kg</p>
+</div>
+
+<style>
+    .report-section {
+        margin-bottom: 20px;
+    }
+
+    .text-center {
+        text-align: center;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    .table-bordered {
+        border: 1px solid #dee2e6;
+    }
+
+    .thead-dark th {
+        background-color: #343a40;
+        color: #fff;
+    }
+
+    .btn {
+        margin-bottom: 20px;
+    }
+</style>

@@ -1,0 +1,14 @@
+﻿@using SimpleLogisticSystem.ViewModels.Users
+@model UserDetailViewModel
+
+<div class="dropdown">
+    <button class="btn btn-success dropdown-toggle" type="button" id="addToWarehouseDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Add to Warehouse
+    </button>
+    <div class="dropdown-menu" aria-labelledby="addToWarehouseDropdown">
+        @foreach (var warehouse in Model.Warehouses)
+        {
+            <a class="dropdown-item" href="#">@warehouse.WarehouseName</a>
+        }
+    </div>
+</div>

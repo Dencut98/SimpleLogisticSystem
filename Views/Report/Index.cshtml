@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Reports";
+}
+
+<style>
+    .report-container {
+        margin-top: 20px;
+    }
+
+    .report-button {
+        margin-bottom: 20px;
+        width: 100%;
+        max-width: 300px;
+    }
+</style>
+
+<div class="container report-container">
+    <h2>Reports</h2>
+    <p>Select a report to view:</p>
+    <div class="row">
+        @if (User.IsInRole("admin"))
+        {
+            <div class="col-md-4">
+                <a class="btn btn-primary report-button" asp-area="" asp-controller="Report" asp-action="InventoryReport" role="button">Inventory Report</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-secondary report-button" asp-area="" asp-controller="Report" asp-action="WarehouseReportIndex" role="button">Warehouses Report</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-info report-button" asp-area="" asp-controller="Report" asp-action="OrdersReportIndex" role="button">Orders Report</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-warning report-button" asp-area="" asp-controller="Report" asp-action="AccountsReport" role="button">Accounts Report</a>
+            </div>
+        }
+        else if (User.IsInRole("inventory_manager"))
+        {
+            <div class="col-md-4">
+                <a class="btn btn-primary report-button" asp-area="" asp-controller="Report" asp-action="InventoryReport" role="button">Inventory Report</a>
+            </div>
+            <div class="col-md-4">
+                <a class="btn btn-secondary report-button" asp-area="" asp-controller="Report" asp-action="WarehouseReportIndex" role="button">Warehouses Report</a>
+            </div>
+        }
+    </div>
+</div>

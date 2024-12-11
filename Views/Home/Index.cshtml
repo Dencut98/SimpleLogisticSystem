@@ -1,0 +1,139 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<style>
+    .background {
+        background-image: url('/images/background.png');
+        background-size: cover;
+        background-position: center;
+        height: 100vh;
+        width: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        filter: blur(2px);
+    }
+
+    .content {
+        position: relative;
+        color: white;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        margin-top: 20px;
+    }
+
+    .jumbotron {
+        background-color: rgba(0, 0, 0, 0.6);
+        padding: 30px;
+        border-radius: 10px;
+    }
+
+    a.btn {
+        box-shadow: none;
+    }
+
+    .align-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100%;
+    }
+
+    .btn-fixed-height {
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .btn-padding-bottom {
+        margin-bottom: 20px;
+    }
+
+    .button-container-login {
+        margin-top: auto;
+        display: flex;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .button-container {
+        margin-top: auto;
+    }
+
+    .btn-limited-width {
+        max-width: 200px;
+        width: 100%;
+    }
+</style>
+
+<div class="background"></div>
+
+<div class="content">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to a simple logistic system!</h1>
+            <p class="lead">Please log in to manage your items and warehouses efficiently.</p>
+            <hr class="my-4">
+            <p>If you don't have an account, you can register for free and start using our system right away.</p>
+            <div class="button-container-login">
+                <a class="btn btn-primary btn-fixed-height btn-padding-bottom btn-limited-width" asp-area="" asp-controller="Account" asp-action="Login" role="button">Log In</a>
+                <a class="btn btn-secondary btn-fixed-height btn-padding-bottom btn-limited-width" asp-area="" asp-controller="Account" asp-action="Register" role="button">Register</a>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="jumbotron">
+            <h1 class="display-4">Welcome to a simple logistic system!</h1>
+            <p class="lead">This is a simple logistics management system to help you manage your items and warehouses efficiently.</p>
+            <hr class="my-4">
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 align-center">
+                <h2>Items</h2>
+                <p>Manage your items, add new items, and keep track of inventory.</p>
+                <div class="button-container">
+                    <a class="btn btn-primary btn-fixed-height btn-padding-bottom" asp-area="" asp-controller="Item" asp-action="Index" role="button">Go to Items &raquo;</a>
+                </div>
+            </div>
+            <div class="col-md-4 align-center">
+                <h2>Warehouses</h2>
+                <p>Manage your warehouses, add new warehouses, and monitor storage capacity.</p>
+                <div class="button-container">
+                    <a class="btn btn-secondary btn-fixed-height btn-padding-bottom" asp-area="" asp-controller="Warehouse" asp-action="Index" role="button">Go to Warehouses &raquo;</a>
+                </div>
+            </div>
+            <div class="col-md-4 align-center">
+                <h2>Orders</h2>
+                <p>Manage your orders, track order status, and view order history.</p>
+                <div class="button-container">
+                    <a class="btn btn-info btn-fixed-height btn-padding-bottom" asp-area="" asp-controller="Order" asp-action="Index" role="button">Go to Orders &raquo;</a>
+                </div>
+            </div>
+            <div class="col-md-4 align-center">
+                <h2>Account</h2>
+                <p>Manage your account settings and view your profile.<br /><br /></p>
+                <div class="button-container">
+                    <a class="btn btn-success btn-fixed-height btn-padding-bottom" asp-area="" asp-controller="User" asp-action="Index" asp-route-id="@User.FindFirstValue(ClaimTypes.NameIdentifier)" role="button">Go to Account &raquo;</a>
+                </div>
+            </div>
+            @if (User.IsInRole("inventory_manager") || User.IsInRole("admin"))
+            {
+                <div class="col-md-4 align-center">
+                    <h2>Reports</h2>
+                    <p>View and generate reports to analyze your logistics data.<br /><br /></p>
+                    <div class="button-container">
+                        <a class="btn btn-warning btn-fixed-height btn-padding-bottom" asp-area="" asp-controller="Report" asp-action="Index" role="button">Go to Reports &raquo;</a>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

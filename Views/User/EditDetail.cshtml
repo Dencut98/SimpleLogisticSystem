@@ -1,0 +1,105 @@
+﻿@using SimpleLogisticSystem.ViewModels.Users
+@model EditUserDetailViewModel
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h3>Edit User Information</h3>
+        </div>
+        <div class="card-body">
+            <form id="editForm" asp-action="EditDetail" method="post">
+                <input type="hidden" asp-for="AppUserId" />
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <label asp-for="UserName" class="form-label"><strong>Username</strong></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <label asp-for="FirstName" class="form-label"><strong>First Name</strong></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="FirstName" class="form-control" />
+                        <span asp-validation-for="FirstName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <label asp-for="LastName" class="form-label"><strong>Last Name</strong></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="LastName" class="form-control" />
+                        <span asp-validation-for="LastName" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <label asp-for="Address.Street" class="form-label"><strong>Street</strong></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="Address.Street" class="form-control" />
+                        <span asp-validation-for="Address.Street" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <label asp-for="Address.City" class="form-label"><strong>City</strong></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="Address.City" class="form-control" />
+                        <span asp-validation-for="Address.City" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <label asp-for="Address.Country" class="form-label"><strong>Country</strong></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="Address.Country" class="form-control" />
+                        <span asp-validation-for="Address.Country" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-3">
+                        <label asp-for="Address.PostalCode" class="form-label"><strong>Postal Code</strong></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <input asp-for="Address.PostalCode" class="form-control" />
+                        <span asp-validation-for="Address.PostalCode" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-sm-4 text-center">
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">Save Changes</button>
+                    </div>
+                    <div class="col-sm-4 text-center">
+                        <a href="@Url.Action("Index", "User", new { id = Model.AppUserId })" class="btn btn-secondary">Cancel</a>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmEditLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmEditLabel">Confirm Changes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to save these changes?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="submit" class="btn btn-success" form="editForm">Confirm changes</button>
+            </div>
+        </div>
+    </div>
+</div>

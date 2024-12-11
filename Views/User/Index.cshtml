@@ -1,0 +1,151 @@
+﻿@using SimpleLogisticSystem.ViewModels.Users
+@model UserDetailViewModel
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h3>User Information</h3>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"><strong>Username:</strong></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model?.UserName</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"><strong>Account Type:</strong></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model?.AccountType</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"><strong>First Name:</strong></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model?.FirstName</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"><strong>Last Name:</strong></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model?.LastName</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"><strong>Street:</strong></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model?.Address?.Street</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"><strong>City:</strong></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model?.Address?.City</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"><strong>Country:</strong></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model?.Address?.Country</p>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"><strong>Postal Code:</strong></label>
+                        <div class="col-sm-9">
+                            <p class="form-control-plaintext">@Model?.Address?.PostalCode</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    @if (User.IsInRole("admin") || User.IsInRole("inventory_manager"))
+                    {
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label"><strong>Warehouses</strong></label>
+                            <div class="col-sm-9">
+                                <div class="card" style="max-height: 200px; overflow-y: auto;">
+                                    <div class="card-body">
+                                        @if (Model?.Warehouses != null && Model.Warehouses.Any())
+                                        {
+                                            <ul class="list-unstyled">
+                                                @foreach (var warehouse in Model.Warehouses)
+                                                {
+                                                    <li>
+                                                        <a class="text-reset" href="@Url.Action("Detail", "Warehouse", new { id = warehouse.Id })">
+                                                            @warehouse.WarehouseName - @warehouse.WarehouseCompany
+                                                        </a>
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <p>No Warehouses assigned.</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <label class="col-sm-3 col-form-label"><strong>Items Created</strong></label>
+                            <div class="col-sm-9">
+                                <div class="card" style="max-height: 200px; overflow-y: auto;">
+                                    <div class="card-body">
+                                        @if (Model?.Items != null && Model.Items.Any())
+                                        {
+                                            <ul class="list-unstyled">
+                                                @foreach (var item in Model.Items)
+                                                {
+                                                    <li>
+                                                        @item.ItemName
+                                                    </li>
+                                                }
+                                            </ul>
+                                        }
+                                        else
+                                        {
+                                            <p>No items created.</p>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label"><strong>Orders Created</strong></label>
+                        <div class="col-sm-9">
+                            <div class="card" style="max-height: 200px; overflow-y: auto;">
+                                <div class="card-body">
+                                    @if (Model?.Orders != null && Model.Orders.Any())
+                                    {
+                                        <ul class="list-unstyled">
+                                            @foreach (var item in Model.Orders)
+                                            {
+                                                <li>
+                                                    @item.OrderId
+                                                </li>
+                                            }
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <p>No orders created.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4 justify-content-center">
+                <div class="col-sm-4 text-center">
+                    <a href="@Url.Action("EditDetail", "User", new { id = Model?.AppUserId })" class="btn btn-primary">Edit Information</a>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <a href="@Url.Action("ChangePassword", "User", new { id = Model?.AppUserId })" class="btn btn-secondary">Edit Login Information</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

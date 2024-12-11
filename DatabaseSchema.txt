@@ -1,0 +1,150 @@
+# Simple Logistic System Database Schema Design
+
+This document outlines the database schema design for the Simple Logistic System. The system is built with ASP.NET Core targeting .NET 8 and uses a SQL Server database.
+
+## Tables
+
+### 1. Users
+
+Stores information about the users of the system.
+
+| Column Name    | Data Type        | Constraints                  |
+|----------------|------------------|------------------------------|
+| Id             | uniqueidentifier | Primary Key, Not Null        |
+| UserName       | nvarchar(256)    | Not Null, Unique             |
+| FirstName      | nvarchar(256)    | Not Null                     |
+| LastName       | nvarchar(256)    | Not Null                     |
+| Email          | nvarchar(256)    | Not Null, Unique             |
+| EmailConfirmed | bit              | Not Null                     |
+| PasswordHash   | nvarchar(max)    | Not Null                     |
+| AccountType    | nvarchar(256)    | Not Null                     |
+| AddressId      | uniqueidentifier | Foreign Key, Not Null        |
+
+### 2. Roles
+
+Stores information about the roles in the system.
+
+| Column Name | Data Type        | Constraints                  |
+|-------------|------------------|------------------------------|
+| Id          | uniqueidentifier | Primary Key, Not Null        |
+| Name        | nvarchar(256)    | Not Null, Unique             |
+
+### 3. UserRoles
+
+Stores the relationship between users and roles.
+
+| Column Name | Data Type        | Constraints                  |
+|-------------|------------------|------------------------------|
+| UserId      | uniqueidentifier | Foreign Key, Not Null        |
+| RoleId      | uniqueidentifier | Foreign Key, Not Null        |
+
+### 4. Addresses
+
+Stores address information for users.
+
+| Column Name | Data Type        | Constraints                  |
+|-------------|------------------|------------------------------|
+| Id          | uniqueidentifier | Primary Key, Not Null        |
+| Street      | nvarchar(256)    | Not Null                     |
+| City        | nvarchar(256)    | Not Null                     |
+| PostalCode  | nvarchar(20)     | Not Null                     |
+| Country     | nvarchar(256)    | Not Null                     |
+
+### 5. Warehouses
+
+Stores information about warehouses.
+
+| Column Name | Data Type        | Constraints                  |
+|-------------|------------------|------------------------------|
+| Id          | uniqueidentifier | Primary Key, Not Null        |
+| Name        | nvarchar(256)    | Not Null, Unique             |
+| Location    | nvarchar(256)    | Not Null                     |
+
+### 6. Items
+
+Stores information about items.
+
+| Column Name | Data Type        | Constraints                  |
+|-------------|------------------|------------------------------|
+| Id          | uniqueidentifier | Primary Key, Not Null        |
+| Name        | nvarchar(256)    | Not Null                     |
+| Description | nvarchar(max)    |                              |
+| Quantity    | int              | Not Null                     |
+| WarehouseId | uniqueidentifier | Foreign Key, Not Null        |
+
+### 7. Orders
+
+Stores information about orders.
+
+| Column Name | Data Type        | Constraints                  |
+|-------------|------------------|------------------------------|
+| Id          | uniqueidentifier | Primary Key, Not Null        |
+| OrderDate   | datetime2        | Not Null                     |
+| UserId      | uniqueidentifier | Foreign Key, Not Null        |
+| Status      | nvarchar(256)    | Not Null                     |
+
+### 8. OrderItems
+
+Stores the relationship between orders and items.
+
+| Column Name | Data Type        | Constraints                  |
+|-------------|------------------|------------------------------|
+| OrderId     | uniqueidentifier | Foreign Key, Not Null        |
+| ItemId      | uniqueidentifier | Foreign Key, Not Null        |
+| Quantity    | int              | Not Null                     |
+
+## Relationships
+
+- **Users** have a one-to-one relationship with **Addresses**.
+- **Users** have a many-to-many relationship with **Roles** through **UserRoles**.
+- **Warehouses** have a one-to-many relationship with **Items**.
+- **Users** have a one-to-many relationship with **Orders**.
+- **Orders** have a many-to-many relationship with **Items** through **OrderItems**.
+
+
+## ER Diagram
+
+Below is a simplified Entity-Relationship (ER) diagram representing the database schema:
+
++----------------+       +----------------+       +----------------+
+|    Users       |       |    Roles       |       |   Addresses    |
++----------------+       +----------------+       +----------------+
+| Id             |<----->| Id             |       | Id             |
+| UserName       |       | Name           |       | Street         |
+| FirstName      |       +----------------+       | City           |
+| LastName       |                                | PostalCode     |
+| Email          |                                | Country        |
+| EmailConfirmed |                                +----------------+
+| PasswordHash   |
+| AccountType    |
+| AddressId      |
++----------------+
+       |
+       |
+       v
++----------------+
+|  UserRoles     |
++----------------+
+| UserId         |
+| RoleId         |
++----------------+
+
++----------------+       +----------------+       +----------------+
+|  Warehouses    |       |    Items       |       |    Orders      |
++----------------+       +----------------+       +----------------+
+| Id             |<----->| Id             |       | Id             |
+| Name           |       | Name           |       | OrderDate      |
+| Location       |       | Description    |       | UserId         |
++----------------+       | Quantity       |       | Status         |
+                         | WarehouseId    |       +----------------+
+                         +----------------+
+                                |
+                                |
+                                v
+                         +----------------+
+                         |  OrderItems    |
+                         +----------------+
+                         | OrderId        |
+                         | ItemId         |
+                         | Quantity       |
+                         +----------------+

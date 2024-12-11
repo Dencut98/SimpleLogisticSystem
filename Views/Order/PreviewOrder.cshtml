@@ -1,0 +1,56 @@
+﻿@model SimpleLogisticSystem.Models.Order
+
+@{
+    ViewData["Title"] = "Preview Order";
+    double totalPrice = 0;
+    double totalWeight = 0;
+}
+
+<h2>Preview Order</h2>
+
+<div>
+    <h3>Order Details</h3>
+    <p><strong>Order ID:</strong> @Model.OrderId</p>
+    <p><strong>Created By:</strong> @Model.CreatedBy</p>
+    <p><strong>Time of order:</strong> @Model.CreatedAt</p>
+    <p><strong>Address:</strong></p>
+    <ul>
+        <li><strong>Street:</strong> @Model.Address.Street</li>
+        <li><strong>City:</strong> @Model.Address.City</li>
+        <li><strong>Postal Code:</strong> @Model.Address.PostalCode</li>
+        <li><strong>Country:</strong> @Model.Address.Country</li>
+    </ul>
+</div>
+
+<div>
+    <h3>Order Items</h3>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Item Name</th>
+                <th>Price</th>
+                <th>Weight</th>
+                <th>Quantity</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.OrderItems)
+            {
+                <tr>
+                    <td>@item.Item.ItemName</td>
+                    <td>@item.Item.Price.ToString("C")</td>
+                    <td>@item.Weight.ToString("F2")</td>
+                    <td>@item.Quantity</td>
+                </tr>
+                totalPrice += item.Item.Price * item.Quantity;
+                totalWeight += item.Weight * item.Quantity;
+            }
+        </tbody>
+    </table>
+</div>
+
+<div>
+    <h3>Total</h3>
+    <p><strong>Total Price:</strong> @totalPrice.ToString("C")</p>
+    <p><strong>Total Weight:</strong> @totalWeight.ToString("F2") Kg</p>
+</div>

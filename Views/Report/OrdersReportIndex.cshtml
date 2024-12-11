@@ -1,0 +1,45 @@
+﻿@using SimpleLogisticSystem.ViewModels.Orders
+@using SimpleLogisticSystem.Data.Enum
+@using Microsoft.AspNetCore.Authorization
+@model IEnumerable<OrderViewModel>
+
+@{
+    ViewData["Title"] = "Order Report Index";
+}
+
+<h2>Order Report Index</h2>
+
+<p>
+    <a asp-action="OrderReportAll" asp-route-id="all">Get Report for All Orders</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Order Type</th>
+            <th>Created By</th>
+            <th>Created At</th>
+            <th>Order Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var order in Model)
+        {
+            <tr>
+                <td>@order.OrderId</td>
+                <td>@order.OrderType</td>
+                <td>@order.CreatedBy</td>
+                <td>@order.CreatedAt</td>
+                <td>@order.OrderStatus</td>
+                <td>
+                    <form method="get" asp-action="OrderReport">
+                        <input type="hidden" name="orderId" value="@order.OrderId" />
+                        <button type="submit" class="btn btn-warning btn-sm">View Report</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

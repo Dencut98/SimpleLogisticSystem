@@ -1,0 +1,87 @@
+﻿@using SimpleLogisticSystem.ViewModels.Items
+@model CreateItemViewModel
+
+@{
+    ViewData["Title"] = "Create Item";
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2>Create New Item</h2>
+            <form asp-action="Create" method="post" class="needs-validation" novalidate>
+                <input type="hidden" asp-for="CreatedBy" />
+                <input type="hidden" asp-for="AppUserId" />
+                <div class="form-group mb-3">
+                    <label asp-for="ItemName" class="form-label">Item Name</label>
+                    <input asp-for="ItemName" class="form-control" required />
+                    <div class="invalid-feedback">
+                        Please provide an item name.
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="ItemCategory" class="form-label">Select Category</label>
+                    <select class="form-select" asp-for="ItemCategory" aria-label="Select Category">
+                        <option selected></option>
+                        @foreach (var category in Model.CategoryNames)
+
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select>
+                    <div class="invalid-feedback">
+                        Please select a category.
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Weight" class="form-label">Weight (kg)</label>
+                    <input asp-for="Weight" class="form-control" type="number" step="0.01" required />
+                    <div class="invalid-feedback">
+                        Please provide a valid weight.
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Quantity" class="form-label">Quantity</label>
+                    <input asp-for="Quantity" class="form-control" type="number" required />
+                    <div class="invalid-feedback">
+                        Please provide a quantity.
+                    </div>
+                </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Price" class="form-label">Price (Sek)</label>
+                    <input asp-for="Price" class="form-control" type="number" required />
+                    <div class="invalid-feedback">
+                        Please provide a Price.
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Example starter JavaScript for disabling form submissions if there are invalid fields
+        (function () {
+            'use strict'
+
+            // Fetch all the forms we want to apply custom Bootstrap validation styles to
+            var forms = document.querySelectorAll('.needs-validation')
+
+            // Loop over them and prevent submission
+            Array.prototype.slice.call(forms)
+                .forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                        if (!form.checkValidity()) {
+                            event.preventDefault()
+                            event.stopPropagation()
+                        }
+
+                        form.classList.add('was-validated')
+                    }, false)
+                })
+        })()
+    </script>
+}
